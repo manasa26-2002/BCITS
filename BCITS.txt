@@ -1,0 +1,584 @@
+1.CREATE database employee;
+   USE database;
+   CREATE table employee_details(EmpId (int,primaryKey),name (varchar(50),Not Null), age (int), JoiningDate (Date) );
+   select * from employee_details;
+   
+2.DROP TABLE tempData;  
+   
+3.CREATE database Products;
+  USE database;
+  CREATE table Products(ProductID (primaryKey),ProductName(not null),Price (decimal,greater than zero));
+  select * from Products;
+  
+4.RENAME TABLE oldorder TO archived_orders;
+
+5.CREATE INDEX idx_category ON inventory(category);
+
+6. CREATE database Student_details;
+    USE database;
+    CREATE table Student_details(StudentID (int primaryKey),Name (varchar(45),Age (int),Grade(varchar(50));
+    select * from Student_details;
+	insert into Student_details(101,'Alice',20,'A');
+	
+7.CREATE UNIQUE INDEX idx_unique_category ON inventory(category);
+8.
+9.MERGE INTO table2 AS t2
+USING table1 AS t1
+ON t2.id = t1.id  -- Assuming both tables have a common column 'id'
+WHEN MATCHED THEN
+    UPDATE SET t2.column1 = t1.column1, t2.column2 = t1.column2
+WHEN NOT MATCHED THEN
+    INSERT (id, column1, column2)
+    VALUES (t1.id, t1.column1, t1.column2);
+	
+10.LOAD DATA INFILE '/path/to/your/file.csv'
+	INTO TABLE employee
+	FIELDS TERMINATED BY ',' 
+	ENCLOSED BY '"'
+	LINES TERMINATED BY '\n'
+	IGNORE 1 ROWS
+	(column1, column2, column3, ...); 
+12.select * from employee_details where salary > min avg max
+13.select * from orders where OrderAmount > 1000;
+18.select * from employee_details whose salary >  avg salary;  
+
+
+26.ORM:Object-Relational Mapping
+
+   architecture of Hibernate ORM:
+   
+   Hibernate, a popular Object-Relational Mapping (ORM) framework in Java, has a well-defined architecture designed to facilitate seamless interaction between Java applications and relational databases. Here's an overview of its key components:
+
+ 1. SessionFactory
+   - Core of Hibernate: This is a heavyweight, thread-safe object that acts as a factory for creating `Session` objects.
+   - Caching: It manages optional second-level caching to improve performance.
+   - Typically instantiated once per application, as it is costly to create.
+
+   - Primary Interface for Interaction: Represents a unit of work with the database.
+   - Handles CRUD operations for persistent objects, manages the first-level cache, and ensures entity lifecycle management.
+   - Sessions are lightweight and not thread-safe.
+
+ 3. Transaction
+   - Unit of Work Management: Encapsulates database transactions and ensures data consistency.
+   - Enables explicit transaction demarcation (begin, commit, rollback).
+
+ 4. Query and Criteria Interfaces
+   - Provide mechanisms to execute database queries:
+     - HQL (Hibernate Query Language): A SQL-like language that works with entity objects instead of tables.
+     - Criteria API: Allows for programmatic query building without using HQL or raw SQL.
+
+
+
+   
+27.components of JPA:
+   
+   Java Persistence API (JPA) is a framework that allows developers to manage relational data in Java applications
+                                         using Object-Relational Mapping (ORM)
+1. Entity Classes: These are Java classes annotated with @Entity that represent database tables.
+                               Each instance of the entity corresponds to a row in the table.
+2. Persistence Context: A managed environment that keeps track of entity instances and ensures they are in sync with the database.
+3. EntityManager: The interface used to interact with the persistence context. 
+                  It manages the lifecycle of entity instances and provides CRUD operations.
+4. Persistence Unit: Defined in the `persistence.xml` file, it specifies the configuration for the EntityManagerFactory,
+                     including database connection details.
+5. Annotations: JPA relies heavily on annotations like @Entity, @Table, @Column, @Id. 
+                to map Java classes and fields to database tables and columns.
+6. Transactions: JPA uses transactions to ensure data integrity and consistency when performing database operations.
+
+28.@Entity:It marks a class has a JPA entity
+
+   @onetoone:defines one-to-one relationship between two entites
+             Each instance of an entity corresponds to exactly one instance of another entity.
+   
+   @onetomany:Defines a one-to-many relationship, where one entity can be associated with multiple instances of another entity.
+   
+   @manytoone:defines many to one relationship where multiple entity associated with single instance of other entity
+   
+   @manytomany:defines many to many relationship where multiple entities associated with multiple instances of other entity
+
+29.JPQL: Java Persistence Query Language allows developers to write queries using entity objects 
+            rather than database tables, making it easier to work with data.
+30.JPA query to fetch the minimum price of the product
+  
+String jpql = "SELECT MIN(p.price) FROM Product p";
+
+TypedQuery<Double> query = entityManager.createQuery(jpql, Double.class);
+Double minPrice = query.getSingleResult();
+
+System.out.println("Minimum price: " + minPrice);	
+		
+31.
+
+32.Steps to connect java application and database:
+	1.import the package : java.sql.*
+	2.load/register the driver : class.forName() 
+	3.establish the connection : driver manager 
+	4.create statement : sql statement
+	5.execute the statement : execute stmt
+	6.process the result 
+	7.close the connection     
+ 
+ 
+ 
+33.Polymorphism:it is defined as object behaving differently at given instance of time;
+    
+	// Parent Class
+class Animal {
+    public void makeSound() {
+        System.out.println("Some generic animal sound");
+    }
+}
+
+// Child Class 1
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("ABC");
+    }
+}
+
+// Child Class 2
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("XYZ");
+    }
+}
+
+public class Polymorphism {
+    public static void main(String[] args) {
+        Animal myAnimal;
+
+        
+        myAnimal = new Dog();
+        myAnimal.makeSound(); 
+
+
+        myAnimal = new Cat();
+        myAnimal.makeSound(); 
+    }
+}
+
+  Encapsulation:
+   
+public class BankAccount {
+    
+    private String accountHolderName;
+    private double balance;
+
+
+    public BankAccount(String accountHolderName, double initialBalance) {
+        this.accountHolderName = accountHolderName;
+        this.balance = initialBalance;
+    }
+
+    
+    public String getAccountHolderName() {
+        return accountHolderName;
+    }
+
+    
+    public void setAccountHolderName(String accountHolderName) {
+        this.accountHolderName = accountHolderName;
+    }
+
+    
+    public double getBalance() {
+        return balance;
+    }
+
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Invalid deposit amount!");
+        }
+    }
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrew: " + amount);
+        } else {
+            System.out.println("Invalid withdrawal amount!");
+        }
+    }
+}
+public class Encapsulation {
+    public static void main(String[] args) {
+
+        BankAccount account = new BankAccount("John Doe", 5000);
+        System.out.println("Account Holder: " + account.getAccountHolderName());
+        System.out.println("Initial Balance: " + account.getBalance());
+        account.deposit(1500);
+        account.withdraw(2000);
+        System.out.println("Final Balance: " + account.getBalance());
+    }
+}
+  Inheritance:It is a oops property it is achieved by using extends keyword,it is also called is-a-relationship
+ 
+class Vehicle {
+    private String brand;
+	
+    public Vehicle(String brand) {
+        this.brand = brand;
+    }
+    public void showBrand() {
+        System.out.println("Brand: " + brand);
+    }
+
+    public void start() {
+        System.out.println("Vehicle is starting...");
+    }
+}
+class Car extends Vehicle {
+    private int numberOfDoors;
+    public Car(String brand, int numberOfDoors) {
+        super(brand); 
+        this.numberOfDoors = numberOfDoors;
+    }
+
+    public void showDetails() {
+        showBrand(); // Call parent class method
+        System.out.println("Number of doors: " + numberOfDoors);
+    }
+}
+
+public class Inheritance {
+    public static void main(String[] args) {
+
+        Car myCar = new Car("Toyota", 4);
+        myCar.start();       
+        myCar.showDetails(); 
+    }
+}
+
+  Abstraction: 
+   
+abstract class Animal {
+    
+    abstract void makeSound();
+    void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Woof! Woof!");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Meow! Meow!");
+    }
+}
+public class Abstraction {
+    public static void main(String[] args) {
+        
+        Animal dog = new Dog();
+        dog.makeSound(); 
+        dog.eat();       
+		
+        Animal cat = new Cat();
+        cat.makeSound(); 
+        cat.eat();
+    }
+}
+  
+34.a. ==: Compares references (memory locations) of objects or primitive values 
+      equals():Compares the content or logical equality of objects.
+	  
+ b.difference between final,finally,finalize:	  
+   final:it is used to declare constants, prevent inheritance, or restrict modification of variables.
+   finally:it is  used in exception handling to execute a block of code regardless of whether an exception is thrown or not.
+   finalize:A method in the  class used for garbage collection-related cleanup before an object is destroyed.
+
+ c.difference between implements and extends:
+	implements: Used when a class wants to implement an interface (or when an interface extends another interface).
+	extends:when a class inherits from another class (or when an interface inherits from another interface).
+d.  checked exceptions:Exceptions that are checked at compile-time. The compiler requires the developer to handle these 
+                      exceptions explicitly using a  block or by declaring them in the method's  clause.
+    unchecked exceptions:Exceptions that are not checked at compile-time. The compiler does not force the developer 
+                    to handle them, but they may still occur at runtime.
+e.@EnableWebMvc:it is used to enable Spring MVC configuration in a Java-based configuration class.
+   @Configuration:it is used to configure any spring application
+   
+f.TreeMap:stores the key in sorted order
+  HashMap:it does not maintain any order,it allows 1 null key,n null value
+  LinkedHasMap: it maintain insertion order.
+g.Method:it is a block of code which is used to perform functionalities.
+  Constructor:it is a spl type of method.  
+
+35.InfiniteLoop Condition
+
+38.Synatx error
+39.output:javaprogramming
+40.syntax error,incorrect declaration
+41.output:matrix[1][1],
+           4
+47.	
+import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    private Map<String, String> userDatabase = new HashMap<>();
+
+    public UserController() {
+        
+        userDatabase.put("john.doe@example.com", "John Doe");
+        userDatabase.put("jane.doe@example.com", "Jane Doe");
+    }
+
+    @GetMapping("/user")
+    public String getUserByEmail(@RequestParam String email) {
+        String userDetails = userDatabase.get(email);
+        if (userDetails != null) {
+            return "User Details: " + userDetails;
+        } else {
+            return "User not found for email: " + email;
+        }
+    }
+}	   
+48.
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class ListSetConversion {
+    public static void main(String[] args) {
+        // Converting List to Set
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(2);
+        System.out.println("Original List: " + list);
+
+        Set<Integer> set = new HashSet<>(list);
+        System.out.println("Converted Set: " + set); 
+
+        // Converting Set to List
+        Set<String> stringSet = new HashSet<>();
+        stringSet.add("A");
+        stringSet.add("B");
+        stringSet.add("C");
+        System.out.println("Original Set: " + stringSet);
+
+        List<String> stringList = new ArrayList<>(stringSet); 
+        System.out.println("Converted List: " + stringList);
+    }
+}
+49.0
+50.public class NumberPattern {
+    public static void main(String[] args) {
+        int rows = 5; 
+       
+        for (int i = 1; i <= rows; i++) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print(j + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+51.
+52.import java.util.TreeMap;
+import java.util.Map;
+
+public class TreeMapExample {
+    public static void main(String[] args) {
+       
+        TreeMap<Integer, String> treeMap = new TreeMap<>();
+        treeMap.put(1, "Apple");
+        treeMap.put(3, "Banana");
+        treeMap.put(5, "Cherry");
+        treeMap.put(2, "Date");
+        treeMap.put(4, "Elderberry");
+
+
+        Map.Entry<Integer, String> firstEntry = treeMap.firstEntry();
+        System.out.println("First Entry: " + firstEntry);
+
+        
+        Map.Entry<Integer, String> lastEntry = treeMap.lastEntry();
+        System.out.println("Last Entry: " + lastEntry);
+    }
+}
+53.
+
+import java.util.TreeMap;
+
+public class TreeMapKeySearch {
+    public static void main(String[] args) {
+      
+        TreeMap<Integer, String> treeMap = new TreeMap<>();
+        treeMap.put(10, "Ten");
+        treeMap.put(20, "Twenty");
+        treeMap.put(30, "Thirty");
+        treeMap.put(40, "Forty");
+        treeMap.put(50, "Fifty");
+
+        
+        int key = 25;
+
+        
+        Integer lowerKey = treeMap.lowerKey(key); 
+        System.out.println("Greatest key lower than " + key + ": " + lowerKey);
+
+        
+        Integer ceilingKey = treeMap.ceilingKey(key); 
+        System.out.println("Least key greater than or equal to " + key + ": " + ceilingKey);
+    }
+}
+
+54.DispatcherServlet  is provided by spring and managed by tomcat server
+55.
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class MyController {
+
+    @GetMapping("/home")
+    public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView("home");
+        modelAndView.addObject("message", "Welcome to the Home Page!");
+        return modelAndView;
+    }
+}
+
+56.IOC:inversion of control is used for inverting the control over entites
+   
+57.public class PrintNumbers {
+
+
+    public static void printNumbers(int start, int end) {
+        if (start > end) {
+            return; 
+        }
+        System.out.println(start); 
+        printNumbers(start + 1, end); 
+    }
+
+    public static void main(String[] args) {
+        
+        printNumbers(1, 100);
+    }
+}
+
+59.<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Names</title>
+</head>
+<body>
+    <h1>Names List</h1>
+
+    <!-- Ensure the list of names is available in the request scope -->
+    <ul>
+        <c:forEach var="name" items="${names}">
+            <li>${name}</li>
+        </c:forEach>
+    </ul>
+</body>
+</html>
+
+58.<!DOCTYPE html>
+<html>
+<head>
+    <title>Toggle Visibility</title>
+    <style>
+        /* Styling for the div */
+        #myDiv {
+            width: 300px;
+            height: 150px;
+            background-color: lightblue;
+            display: none; /* Initially hidden */
+            text-align: center;
+            line-height: 150px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Toggle Visibility Example</h1>
+    <button onclick="toggleVisibility()">Toggle Div Visibility</button>
+    
+    <!-- Div to be toggled -->
+    <div id="myDiv">Hello, I am a Div!</div>
+
+    <script>
+        function toggleVisibility() {
+            const div = document.getElementById("myDiv");
+            // Toggle between 'none' and 'block'
+            if (div.style.display === "none") {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+
+60.
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Background Color</title>
+</head>
+<body>
+    <h1>Click the button to change the background color!</h1>
+    <button onclick="changeBackgroundColor()">Change Color</button>
+
+    <script>
+        function changeBackgroundColor() {
+            
+            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+            document.body.style.backgroundColor = randomColor;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
